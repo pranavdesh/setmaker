@@ -10,14 +10,14 @@ import { TrackRow } from "@/components/CreatePlaylistModalTable/columns";
 type trackListState = {
   tracks: Track[];
   selectedTracks: TrackRow[];
-  accessToken: string;
+  accessToken: string | undefined;
   userID: string;
 };
 
 type Action =
   | { type: "SET_TRACKS"; payload: Track[] }
   | { type: "SET_SELECTED_TRACKS"; payload: TrackRow[] }
-  | { type: "SET_ACCESS_TOKEN"; payload: string }
+  | { type: "SET_ACCESS_TOKEN"; payload: string | undefined }
   | { type: "SET_USER_ID"; payload: string };
 
 function trackListReducer(state: trackListState, action: Action) {

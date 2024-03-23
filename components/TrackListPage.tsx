@@ -1,17 +1,15 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import TrackList from "@/components/TrackList";
-import TopNav from "@/components/TopNav";
 import { TrackListProvider } from "@/state/globalState";
 
 interface Props {
-  accessToken: string;
+  accessToken: string | undefined;
 }
 
-const HomePage = ({ accessToken }: Props) => {
+const TrackListPage = ({ accessToken }: Props) => {
   return (
     <div>
-      <TopNav />
       <div className="flex flex-col font-mono text-sm lg:flex">
         <TrackListProvider>
           <TrackList accessToken={accessToken} />
@@ -21,4 +19,4 @@ const HomePage = ({ accessToken }: Props) => {
   );
 };
 
-export default HomePage;
+export default TrackListPage;

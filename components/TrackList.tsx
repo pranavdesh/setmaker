@@ -14,7 +14,7 @@ import TrackLoading from "./TrackLoading";
 import { TrackListContext } from "@/state/globalState";
 
 interface Props {
-  accessToken: string;
+  accessToken: string | undefined;
 }
 
 const TrackList = (props: Props) => {
@@ -115,7 +115,7 @@ async function fetchTracks(
 
 async function fetchAudioFeatures(
   Tracks: Track[],
-  accessToken: string
+  accessToken: string | undefined
 ): Promise<Track[]> {
   const trackIds = Tracks.map((item) => item.spotifyId);
   try {
@@ -168,7 +168,7 @@ async function fetchAudioFeatures(
   }
 }
 
-async function getUserID(accessToken: string) {
+async function getUserID(accessToken: string | undefined) {
   const response = await fetch("/api/getUserId", {
     method: "POST",
     headers: {

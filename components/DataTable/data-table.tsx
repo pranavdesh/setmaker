@@ -120,7 +120,7 @@ export function DataTable<TData, TValue>({
   return (
     <div>
       <div className="flex flex-col">
-        <div className="flex items-center gap-2 ml-8 py-4">
+        <div className="flex  flex-col sm:flex-row items-center gap-2 ml-8 py-4">
           <div className="text-bold text-green-500 pr-8">
             <h1>Filters</h1>
           </div>
