@@ -28,7 +28,7 @@ interface CreatePlaylistProps {
     visibility: boolean,
     userID: string,
     tracks: TrackRow[],
-    accessToken: string
+    accessToken: string | undefined
   ) => void;
 }
 

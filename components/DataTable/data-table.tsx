@@ -257,7 +257,7 @@ async function createPlaylist(
   visibility: boolean,
   userID: string,
   tracks: TrackRow[],
-  accessToken: string
+  accessToken: string | undefined
 ) {
   try {
     const response = await fetch(
