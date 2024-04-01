@@ -108,7 +108,6 @@ export function DataTable<TData, TValue>({
     });
 
     const filterValue = { min: minBpm, max: maxBpm };
-    console.log("state", state);
 
     if (table && table.getColumn("bpm")) {
       table.getColumn("bpm")!.setFilterValue(filterValue);

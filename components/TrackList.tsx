@@ -12,6 +12,7 @@ import { DataTable } from "./DataTable/data-table";
 import { columns } from "./DataTable/columns";
 import TrackLoading from "./TrackLoading";
 import { TrackListContext } from "@/state/globalState";
+import SignInButton from "./SignInButton";
 
 interface Props {
   accessToken: string | undefined;
@@ -21,6 +22,7 @@ const TrackList = (props: Props) => {
   //const [tracks, setTracks] = useState<Track[]>([]);
   const [loading, setLoading] = useState(true);
   const { state, dispatch } = useContext(TrackListContext);
+  const [signedIn, setSignedIn] = useState(true);
 
   const loadTracks = async () => {
     let data: Track[] = [];
@@ -43,8 +45,14 @@ const TrackList = (props: Props) => {
     setLoading(false);
     const loadPage = async () => {
       setLoading(true);
-      const data = await loadTracks();
       const userID = await getUserID(props.accessToken);
+      if (userID === "") {
+        setSignedIn(false);
+        setLoading(false);
+        return;
+      }
+
+      const data = await loadTracks();
 
       dispatch({ type: "SET_USER_ID", payload: userID });
       dispatch({ type: "SET_ACCESS_TOKEN", payload: props.accessToken });
@@ -68,7 +76,15 @@ const TrackList = (props: Props) => {
             </div>
           </div>
         )}
-        {!loading && <DataTable columns={columns} data={state.tracks} />}
+        {!loading && signedIn && (
+          <DataTable columns={columns} data={state.tracks} />
+        )}
+        {!loading && !signedIn && (
+          <div className="flex flex-col items-center justify-center min-h-screen">
+            <h1 className="py-6">Access expired. Please sign in again!</h1>{" "}
+            <SignInButton></SignInButton>
+          </div>
+        )}
       </div>
     </section>
   );
@@ -89,7 +105,6 @@ async function fetchTracks(
         offset: offset,
       }),
     });
-
     // Check if the fetch request was successful
     if (!response.ok) {
       // If the response status code is an error (4xx, 5xx), throw to catch block
@@ -169,17 +184,30 @@ async function fetchAudioFeatures(
 }
 
 async function getUserID(accessToken: string | undefined) {
-  const response = await fetch("/api/getUserId", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      accessToken: accessToken,
-    }),
-  });
-  const data = await response.json();
-  return data;
+  try {
+    const response = await fetch("/api/getUserId", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        accessToken: accessToken,
+      }),
+    });
+
+    if (!response.ok) {
+      // If the response status code is an error (4xx, 5xx), throw to catch block
+      const errorData = await response.json();
+      throw new Error(`Error ${response.status}: ${JSON.stringify(errorData)}`);
+    }
+
+    const data = await response.json();
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error("Error fetching userID:", error);
+    return "";
+  }
 }
 
 export default TrackList;
