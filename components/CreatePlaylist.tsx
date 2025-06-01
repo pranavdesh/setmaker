@@ -1,5 +1,4 @@
-import React, { use } from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import CreatePlaylistForm from "./CreatePlaylistForm";
 import {
   AlertDialog,
@@ -16,7 +15,6 @@ import { Button } from "@/components/ui/button";
 import { CreatePlaylistModalTable } from "./CreatePlaylistModalTable/data-table";
 import { columns } from "./CreatePlaylistModalTable/columns";
 import { TrackRow } from "./CreatePlaylistModalTable/columns";
-import { create } from "lodash";
 import { TrackListContext } from "@/state/globalState";
 
 interface CreatePlaylistProps {
@@ -37,7 +35,6 @@ const CreatePlaylist = (props: CreatePlaylistProps) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
     setOpen(true);
-    console.log("handleOpen called");
   };
 
   const context = React.useContext(TrackListContext);

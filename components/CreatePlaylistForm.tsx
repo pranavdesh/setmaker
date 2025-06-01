@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { TrackRow } from "./CreatePlaylistModalTable/columns";
 import { useForm } from "react-hook-form";
@@ -43,10 +43,8 @@ const CreatePlaylistForm: React.FC<CreatePlaylistFormProps> = ({
   tracks,
   createPlaylist,
 }) => {
-  const [setlistName, setsetlistName] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [id, setid] = useState<string>("");
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

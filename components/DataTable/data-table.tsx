@@ -272,7 +272,7 @@ async function createPlaylist(
           accessToken: accessToken,
           name: name,
           description: description,
-          visibility: true,
+          visibility: visibility,
         }),
       }
     );
@@ -289,12 +289,4 @@ async function createPlaylist(
   } catch (error) {
     console.error("Error fetching tracks:", error);
   }
-  console.log(
-    "Creating playlist",
-    name,
-    description,
-    visibility,
-    userID,
-    tracks
-  );
 }

@@ -9,7 +9,7 @@ export const options: NextAuthOptions = {
       authorization: {
         params: {
           scope:
-            "ugc-image-upload playlist-read-private playlist-read-collaborative playlist-modify-public playlist-modify-private user-library-read user-library-modify user-read-email ",
+            "ugc-image-upload playlist-read-private playlist-read-collaborative playlist-modify-public playlist-modify-private user-library-read user-library-modify user-read-email",
         },
       },
     }),

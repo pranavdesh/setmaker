@@ -32,15 +32,11 @@ export async function POST(request: Request) {
 
     console.log("Playlist created with ID", id, "and URI", uri);
 
-    const trackUriString = tracks
-      .map((track: TrackRow) => `spotify:track:${track.spotifyId}`)
-      .join(",");
-
     const trackUriArray = tracks.map(
       (track: TrackRow) => `spotify:track:${track.spotifyId}`
     );
 
-    console.log("Adding tracks to playlist", id, "with URIs", trackUriString);
+    console.log("Adding tracks to playlist", id);
     const addTracksResponse = await fetch(
       "https://api.spotify.com/v1/playlists/" + id + "/tracks",
       {
