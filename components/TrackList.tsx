@@ -202,7 +202,6 @@ async function getUserID(accessToken: string | undefined) {
     }
 
     const data = await response.json();
-    console.log(data);
     return data;
   } catch (error) {
     console.error("Error fetching userID:", error);
