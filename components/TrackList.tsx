@@ -26,18 +26,20 @@ const TrackList = (props: Props) => {
 
   const loadTracks = async () => {
     let data: Track[] = [];
-    let hasMore = true;
-    let offset = 0;
-
-    while (hasMore) {
-      const [fetchedTracks, _] = await fetchTracks(props, offset);
-      data = [...data, ...fetchedTracks];
-      offset += 50;
-      if (fetchedTracks.length < 50) {
-        hasMore = false;
-      }
+    const [firstTracks, total] = await fetchTracks(props, 0);
+    data = [...data, ...firstTracks];
+    const totalPages = Math.ceil(total / 50);
+    const promises = [] as Promise<[Track[], number]>[];
+    for (let page = 1; page < totalPages; page++) {
+      const offset = page * 50;
+      promises.push(fetchTracks(props, offset));
     }
-
+    if (promises.length > 0) {
+      const results = await Promise.all(promises);
+      results.forEach(([fetchedTracks]) => {
+        data = [...data, ...fetchedTracks];
+      });
+    }
     return data;
   };
 
@@ -93,7 +95,7 @@ const TrackList = (props: Props) => {
 async function fetchTracks(
   props?: Props,
   offset?: number
-): Promise<[Track[], Track[]]> {
+): Promise<[Track[], number]> {
   try {
     const response = await fetch("/api/getTracks", {
       method: "POST",
@@ -113,18 +115,20 @@ async function fetchTracks(
     }
 
     // If response is okay, parse it
-    const newTracks: Track[] = await response.json();
+    const data = await response.json();
+    const newTracks: Track[] = data.tracks ?? [];
+    const total: number = data.total ?? newTracks.length;
 
     const tracksWithFeatures = await fetchAudioFeatures(
       newTracks,
       props!.accessToken
     );
 
-    return [tracksWithFeatures, newTracks];
+    return [tracksWithFeatures, total];
   } catch (error) {
     // Log the error for debugging
     console.error("Error fetching tracks:", error);
-    return [[], []];
+    return [[], 0];
   }
 }
 

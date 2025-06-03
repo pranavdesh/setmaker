@@ -51,7 +51,8 @@ export async function POST(request: NextRequest) {
     // If the response is OK, proceed to parse it
     const tracks = await spotifyRes.json();
     const extractedTracks: Track[] = extractTrackInfo(tracks);
-    return NextResponse.json(extractedTracks);
+    const total = tracks.total ?? extractedTracks.length;
+    return NextResponse.json({ tracks: extractedTracks, total });
   } catch (error) {
     // Log unexpected errors for debugging
     console.error("Unexpected error in POST:", error);
